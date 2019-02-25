@@ -65,6 +65,7 @@ hkdf (const EVP_MD *h, int skip,
     if ((ctx = HMAC_CTX_new()) == NULL) {
         perror("HMAC_CTX_new()");
         free(digest);
+        digest = NULL;
     }
     if (!skip) {
         /*

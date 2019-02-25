@@ -918,6 +918,7 @@ dump_key_con (struct candidate *peer)
     }
     if ((buf = malloc(connector_len + 1)) == NULL) {
         dpp_debug(DPP_DEBUG_ERR, "unable to copy the connector!\n");
+        fclose(fp);
         return;
     }
     memcpy(buf, connector, connector_len);
