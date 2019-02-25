@@ -21,8 +21,14 @@ AC_ARG_WITH(ssl,
 	[ssldir="/usr/local/ssl" custom_ssl="no"]
 )
 
-CFLAGS="$CFLAGS -Wall -I$ssldir/include"
-LDFLAGS="$LDFLAGS -L$ssldir/lib -L$ssldir"
+AC_ARG_WITH(libnl,
+	AS_HELP_STRING([--with-libnl=PATH], [location of libnl]),
+	[libnldir="$withval" custom_libnl="yes"],
+	[libnldir="/usr" custom_libnl="no"]
+)
+
+CFLAGS="$CFLAGS -Wall -I$ssldir/include -I$libnldir/include/libnl3"
+LDFLAGS="$LDFLAGS -L$ssldir/lib -L$ssldir -L$libnldir/lib -L$libnldir"
 
 # Checks for header files.
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h netinet/in.h stddef.h stdlib.h string.h sys/ioctl.h sys/socket.h sys/time.h unistd.h])
@@ -74,7 +80,7 @@ case $host in
 		LDFLAGS="$LDFLAGS -static",
 		[givemsg="yes" ld_msg="LD_LIBRARY_PATH"]
 	)
-	CFLAGS="$CFLAGS -I/usr/include/libnl3"
+	# CFLAGS="$CFLAGS -I/usr/include/libnl3"
 	AC_CONFIG_FILES([linux/Makefile
 	])
 	;;
